@@ -4,6 +4,7 @@ import in.abdllahtrgt.restapi.dto.ExpenseDTO;
 import in.abdllahtrgt.restapi.entity.ExpenseEntity;
 import in.abdllahtrgt.restapi.repository.ExpenseRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ExpenseService implements IExpenseService {
     private final ExpenseRepository expenseRepository;
     private final ModelMapper modelMapper;
@@ -30,6 +32,7 @@ public class ExpenseService implements IExpenseService {
     public List<ExpenseDTO> getAllExpenses() {
         // call the repository method
         List<ExpenseEntity> list = expenseRepository.findAll();
+        log.info("Printing the data from repository {}", list);
         //convert the entity object to dto
         List<ExpenseDTO> listOfExpenses = list.stream()
                 .map(this::mapToExpenseDTO)
