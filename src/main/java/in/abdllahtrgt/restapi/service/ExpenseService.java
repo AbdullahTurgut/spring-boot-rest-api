@@ -20,7 +20,7 @@ public class ExpenseService implements IExpenseService {
     public List<ExpenseDTO> getAllExpenses() {
         // call the repository method
         List<ExpenseEntity> list = expenseRepository.findAll();
-        //convert the entity object to dto object
+        //convert the entity object to dto
         List<ExpenseDTO> listOfExpenses = list.stream()
                 .map(this::mapToExpenseDTO)
                 .collect(Collectors.toList());
