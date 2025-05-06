@@ -24,7 +24,7 @@ public class ExpenseService implements IExpenseService {
     private final ModelMapper modelMapper;
 
     /**
-     * It will fetch the expenses from database
+     * It will fetch the expenses from db
      *
      * @return list
      */
