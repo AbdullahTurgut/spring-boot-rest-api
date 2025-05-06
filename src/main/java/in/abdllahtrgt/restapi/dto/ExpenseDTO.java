@@ -1,4 +1,4 @@
-package in.abdllahtrgt.restapi.response;
+package in.abdllahtrgt.restapi.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +13,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ExpenseResponse {
-
+public class ExpenseDTO {
     private String expenseId;
     private String name;
     private String description;
