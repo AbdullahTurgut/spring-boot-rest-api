@@ -21,7 +21,6 @@ public class ExpenseResponse {
     private String category;
     private Date date;
     private BigDecimal amount;
-
     private Timestamp createdAt;
     private Timestamp updatedAt;
 }

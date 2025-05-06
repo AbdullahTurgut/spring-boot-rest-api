@@ -10,12 +10,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Service implementation for Expense module
+ *
+ * @author Abdullah
+ */
 @Service
 @RequiredArgsConstructor
 public class ExpenseService implements IExpenseService {
     private final ExpenseRepository expenseRepository;
     private final ModelMapper modelMapper;
 
+    /**
+     * It will fetch the expenses from database
+     *
+     * @return list
+     */
     @Override
     public List<ExpenseDTO> getAllExpenses() {
         // call the repository method
@@ -28,6 +38,12 @@ public class ExpenseService implements IExpenseService {
         return listOfExpenses;
     }
 
+    /**
+     * Mapper method for converting expense entity object to expense dto
+     *
+     * @param expenseEntity
+     * @return expenseDto
+     */
     private ExpenseDTO mapToExpenseDTO(ExpenseEntity expenseEntity) {
         return modelMapper.map(expenseEntity, ExpenseDTO.class);
     }

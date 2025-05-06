@@ -11,12 +11,22 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This is controller class for Expense module
+ *
+ * @author Abdullah
+ */
 @RestController
 @RequiredArgsConstructor
 public class ExpenseController {
     private final IExpenseService expenseService;
     private final ModelMapper modelMapper;
 
+    /**
+     * It will fetch the expenses from database
+     *
+     * @return list
+     */
     @GetMapping("/expenses")
     public List<ExpenseResponse> getExpenses() {
         // call the service method
@@ -29,6 +39,12 @@ public class ExpenseController {
         return responseList;
     }
 
+    /**
+     * Mapper method for converting expense dto object to expense response
+     *
+     * @param expenseDTO
+     * @return ExpenseResponse
+     */
     private ExpenseResponse mapToResponse(ExpenseDTO expenseDTO) {
         return modelMapper.map(expenseDTO, ExpenseResponse.class);
     }

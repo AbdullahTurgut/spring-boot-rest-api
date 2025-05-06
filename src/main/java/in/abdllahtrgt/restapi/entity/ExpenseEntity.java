@@ -26,6 +26,7 @@ public class ExpenseEntity {
     @Column(unique = true)
     private String expenseId;
     private String name;
+    @Column(name = "note")
     private String description;
     private String category;
     private Date date;
