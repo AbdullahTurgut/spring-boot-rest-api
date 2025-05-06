@@ -9,11 +9,10 @@ import java.util.List;
  *
  * @author Abdullah
  */
-
 public interface IExpenseService {
 
     /**
-     * It will fetch the expenses from database
+     * It will fetch the expenses from db
      *
      * @return list
      */
