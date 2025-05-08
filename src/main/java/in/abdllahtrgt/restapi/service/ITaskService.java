@@ -17,4 +17,12 @@ public interface ITaskService {
      * @return list
      */
     List<TaskDTO> getAllTasks();
+
+    /**
+     * It will fetch the task by taskId from db
+     *
+     * @param taskId
+     * @return TaskDTO
+     */
+    TaskDTO getTaskByTaskId(String taskId);
 }

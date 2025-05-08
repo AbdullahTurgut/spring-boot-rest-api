@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -41,6 +42,20 @@ public class TaskController {
                 .collect(Collectors.toList());
         // return the list
         return taskResponseList;
+    }
+
+    /**
+     * It will fetch the task by taskId from db
+     *
+     * @param taskId
+     * @return TaskResponse
+     */
+    @GetMapping("/tasks/{taskId}")
+    public TaskResponse getTaskById(@PathVariable String taskId) {
+        log.info("Printing the task id {}", taskId);
+        TaskDTO taskDTO = taskService.getTaskByTaskId(taskId);
+        log.info("Printing the task details {}", taskDTO);
+        return mapToResponse(taskDTO);
     }
 
     /**
