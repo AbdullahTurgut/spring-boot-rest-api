@@ -7,6 +7,7 @@ import java.util.Optional;
 
 /**
  * Jpa repository for task resource
+ *
  * @author Abdullah
  */
 public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
@@ -19,5 +20,3 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
      */
     Optional<TaskEntity> findByTaskId(String taskId);
 }
-
-@
