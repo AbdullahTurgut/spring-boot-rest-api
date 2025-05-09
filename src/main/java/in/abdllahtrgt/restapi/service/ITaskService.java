@@ -25,4 +25,12 @@ public interface ITaskService {
      * @return TaskDTO
      */
     TaskDTO getTaskByTaskId(String taskId);
+
+    /**
+     * It will delete the task by taskId from db
+     *
+     * @param taskId
+     * @return void
+     */
+    void deleteTaskByTaskId(String taskId);
 }

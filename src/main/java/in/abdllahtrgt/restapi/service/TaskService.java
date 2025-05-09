@@ -50,12 +50,39 @@ public class TaskService implements ITaskService {
     @Override
     public TaskDTO getTaskByTaskId(String taskId) {
         // call repository
-        TaskEntity task = taskRepository.findByTaskId(taskId)
-                .orElseThrow(() -> new ResourceNotFoundException("Task not found for the id" + taskId));
-        log.info("Printing the task entity details {}", task);
+        TaskEntity task = getEntity(taskId);
+        log.info("Printing the task entity {}", task);
         // map to task dto
         return mapToTaskDTO(task);
     }
+
+
+    /**
+     * It will delete the task by taskId from db
+     *
+     * @param taskId
+     * @return void
+     */
+    @Override
+    public void deleteTaskByTaskId(String taskId) {
+        TaskEntity task = getEntity(taskId);
+        log.info("Printing the task entity {}", task);
+        taskRepository.delete(task);
+    }
+
+
+    /**
+     * It will fetch the task by taskId from db
+     *
+     * @param taskId
+     * @return TaskEntity
+     */
+    private TaskEntity getEntity(String taskId) {
+        TaskEntity task = taskRepository.findByTaskId(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found for the id" + taskId));
+        return task;
+    }
+
 
     /**
      * Mapper method for converting task entity object to task dto

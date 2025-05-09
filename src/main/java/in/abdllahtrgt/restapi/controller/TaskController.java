@@ -6,10 +6,8 @@ import in.abdllahtrgt.restapi.service.ITaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,6 +55,18 @@ public class TaskController {
         log.info("Printing the task details {}", taskDTO);
         return mapToResponse(taskDTO);
     }
+
+
+    /**
+     * It will delete the task by taskId from db
+     */
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/tasks/{taskId}/delete")
+    public void deleteTaskByTaskId(@PathVariable String taskId) {
+        log.info("API DELETE /tasks/{}/delete called", taskId);
+        taskService.deleteTaskByTaskId(taskId);
+    }
+
 
     /**
      * Mapper method converting taskDTO to task response
