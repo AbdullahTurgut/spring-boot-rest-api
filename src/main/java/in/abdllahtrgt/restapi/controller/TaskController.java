@@ -1,8 +1,10 @@
 package in.abdllahtrgt.restapi.controller;
 
 import in.abdllahtrgt.restapi.dto.TaskDTO;
+import in.abdllahtrgt.restapi.request.TaskRequest;
 import in.abdllahtrgt.restapi.response.TaskResponse;
 import in.abdllahtrgt.restapi.service.ITaskService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -58,7 +60,36 @@ public class TaskController {
 
 
     /**
+     * It will save the task details to db
+     *
+     * @param taskRequest
+     * @return TaskResponse
+     */
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/tasks/save")
+    public TaskResponse saveTaskDetails(@Valid @RequestBody TaskRequest taskRequest) {
+        log.info("API POST /tasks/save called {}", taskRequest);
+        TaskDTO taskDTO = mapToTaskDTO(taskRequest);
+        taskDTO = taskService.saveTaskDetails(taskDTO);
+        log.info("Printing the task dto {}", taskDTO);
+        return mapToResponse(taskDTO);
+    }
+
+    /**
+     * Mapper method to convert task request to task dto
+     *
+     * @param taskRequest
+     * @return TaskDTO
+     */
+    private TaskDTO mapToTaskDTO(@Valid TaskRequest taskRequest) {
+        return modelMapper.map(taskRequest, TaskDTO.class);
+    }
+
+    /**
      * It will delete the task by taskId from db
+     *
+     * @param taskId
+     * @return void
      */
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/tasks/{taskId}/delete")
