@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -68,6 +69,32 @@ public class TaskService implements ITaskService {
         TaskEntity task = getEntity(taskId);
         log.info("Printing the task entity {}", task);
         taskRepository.delete(task);
+    }
+
+
+    /**
+     * It will save the task details to db
+     *
+     * @param taskDTO
+     * @return TaskDTO
+     */
+    @Override
+    public TaskDTO saveTaskDetails(TaskDTO taskDTO) {
+        TaskEntity taskEntity = mapToTaskEntity(taskDTO);
+        taskEntity.setTaskId(UUID.randomUUID().toString());
+        taskEntity = taskRepository.save(taskEntity);
+        log.info("Printing the task entity details {}", taskEntity);
+        return mapToTaskDTO(taskEntity);
+    }
+
+    /**
+     * Mapper method to convert task dto to task entity
+     *
+     * @param taskDTO
+     * @return TaskEntity
+     */
+    private TaskEntity mapToTaskEntity(TaskDTO taskDTO) {
+        return modelMapper.map(taskDTO, TaskEntity.class);
     }
 
 

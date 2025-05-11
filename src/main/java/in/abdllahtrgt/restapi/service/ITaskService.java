@@ -33,4 +33,12 @@ public interface ITaskService {
      * @return void
      */
     void deleteTaskByTaskId(String taskId);
+
+    /**
+     * It will save the task details to db
+     *
+     * @param taskDTO
+     * @return TaskDTO
+     */
+    TaskDTO saveTaskDetails(TaskDTO taskDTO);
 }
