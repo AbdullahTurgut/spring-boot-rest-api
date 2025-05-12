@@ -26,6 +26,7 @@ public class TaskEntity {
     private String taskId;
     private String name;
     private String status;
+    private String category;
     private Date date;
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

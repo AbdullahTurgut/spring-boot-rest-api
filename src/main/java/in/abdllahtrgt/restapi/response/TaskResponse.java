@@ -23,6 +23,8 @@ public class TaskResponse {
     private String name;
     @NotBlank(message = "Task status is required")
     private String status;
+    @NotNull(message = "Task category is required")
+    private String category;
     @NotNull(message = "Task date is required")
     private Date date;
 
