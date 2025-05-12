@@ -41,4 +41,14 @@ public interface ITaskService {
      * @return TaskDTO
      */
     TaskDTO saveTaskDetails(TaskDTO taskDTO);
+
+
+    /**
+     * It will update the task details to db
+     *
+     * @param taskDTO
+     * @param taskId
+     * @return TaskDTO
+     */
+    TaskDTO updateTaskDetails(TaskDTO taskDTO, String taskId);
 }

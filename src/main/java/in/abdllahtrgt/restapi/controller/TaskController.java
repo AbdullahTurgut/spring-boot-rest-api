@@ -76,6 +76,24 @@ public class TaskController {
     }
 
     /**
+     * It will update the task details to db
+     *
+     * @param updateRequest
+     * @param taskId
+     * @return TaskResponse
+     */
+    @PutMapping("/tasks/{taskId}/update")
+    public TaskResponse updateTaskDetails(@RequestBody TaskRequest updateRequest, @PathVariable String taskId) {
+        log.info("API PUT /tasks/{}/update request body {}", taskId, updateRequest);
+        TaskDTO updatedTaskDto = mapToTaskDTO(updateRequest);
+        // TODO : call the service method to update the details
+        updatedTaskDto = taskService.updateTaskDetails(updatedTaskDto, taskId);
+        log.info("Printing the updated task dto details {}", updatedTaskDto);
+        return mapToResponse(updatedTaskDto);
+    }
+
+
+    /**
      * Mapper method to convert task request to task dto
      *
      * @param taskRequest

@@ -16,6 +16,7 @@ public class TaskRequest {
     private String taskId;
     private String name;
     private String status;
+    private String category;
     private Date date;
     private Timestamp createdAt;
     private Timestamp updatedAt;

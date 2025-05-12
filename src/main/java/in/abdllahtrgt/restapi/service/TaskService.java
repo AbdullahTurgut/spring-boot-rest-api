@@ -87,6 +87,19 @@ public class TaskService implements ITaskService {
         return mapToTaskDTO(taskEntity);
     }
 
+    @Override
+    public TaskDTO updateTaskDetails(TaskDTO taskDTO, String taskId) {
+        TaskEntity existingTask = getEntity(taskId);
+        TaskEntity updatedTask = mapToTaskEntity(taskDTO);
+        updatedTask.setId(existingTask.getId());
+        updatedTask.setTaskId(existingTask.getTaskId());
+        updatedTask.setCreatedAt(existingTask.getCreatedAt());
+        updatedTask.setUpdatedAt(existingTask.getUpdatedAt());
+        updatedTask = taskRepository.save(updatedTask);
+        log.info("Printing the updated task entity details {}", updatedTask);
+        return mapToTaskDTO(updatedTask);
+    }
+
     /**
      * Mapper method to convert task dto to task entity
      *
