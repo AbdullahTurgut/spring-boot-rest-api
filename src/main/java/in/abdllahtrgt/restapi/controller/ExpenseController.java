@@ -6,7 +6,6 @@ import in.abdllahtrgt.restapi.service.IExpenseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @Slf4j // for loggers
-@CrossOrigin("*") // allow all api fetching
 public class ExpenseController {
     private final IExpenseService expenseService;
     private final ModelMapper modelMapper;

@@ -6,6 +6,7 @@ import in.abdllahtrgt.restapi.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -18,6 +19,8 @@ public class ProfileService implements IProfileService {
     private final ProfileRepository profileRepository;
     private final ModelMapper modelMapper;
 
+    private final PasswordEncoder encoder;
+
     /**
      * It will fetch the profile to db
      *
@@ -26,6 +29,7 @@ public class ProfileService implements IProfileService {
      */
     @Override
     public ProfileDTO createProfile(ProfileDTO profileDTO) {
+        profileDTO.setPassword(encoder.encode(profileDTO.getPassword()));
         ProfileEntity profileEntity = mapToProfileEntity(profileDTO);
         profileEntity.setProfileId(UUID.randomUUID().toString());
         // Call the repository method
