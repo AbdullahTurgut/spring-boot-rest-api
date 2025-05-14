@@ -2,6 +2,7 @@ package in.abdllahtrgt.restapi.service;
 
 import in.abdllahtrgt.restapi.dto.ProfileDTO;
 import in.abdllahtrgt.restapi.entity.ProfileEntity;
+import in.abdllahtrgt.restapi.handleException.ItemsExistsException;
 import in.abdllahtrgt.restapi.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,9 @@ public class ProfileService implements IProfileService {
      */
     @Override
     public ProfileDTO createProfile(ProfileDTO profileDTO) {
+        if (profileRepository.existsByEmail(profileDTO.getEmail())) {
+            throw new ItemsExistsException("Profile already exists! " + profileDTO.getEmail());
+        }
         profileDTO.setPassword(encoder.encode(profileDTO.getPassword()));
         ProfileEntity profileEntity = mapToProfileEntity(profileDTO);
         profileEntity.setProfileId(UUID.randomUUID().toString());

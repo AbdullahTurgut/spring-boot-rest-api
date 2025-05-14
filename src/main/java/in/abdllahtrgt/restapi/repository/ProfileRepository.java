@@ -9,4 +9,6 @@ public interface ProfileRepository extends JpaRepository<ProfileEntity, Long> {
 
     // custom method
     Optional<ProfileEntity> findByEmail(String email);
+
+    Boolean existsByEmail(String email);
 }
