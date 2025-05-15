@@ -21,7 +21,7 @@ import java.util.List;
 @Configuration
 public class CorsConfig {
 
-    
+
     /**
      * Creates and registers a {@link CorsFilter} bean that enables CORS support
      * for requests coming from the frontend domain.
@@ -30,13 +30,15 @@ public class CorsConfig {
      */
     @Bean
     public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOriginPatterns(List.of("http://localhost:5173"));
-        config.addAllowedMethod("*");
+        config.setAllowedOriginPatterns(List.of("http://localhost:5173")); // Vite kullanıyorsan bu doğru
         config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
+
         return new CorsFilter(source);
     }
 }

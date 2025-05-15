@@ -7,7 +7,9 @@ import in.abdllahtrgt.restapi.response.AuthResponse;
 import in.abdllahtrgt.restapi.response.ProfileResponse;
 import in.abdllahtrgt.restapi.service.CustomUserDetailsService;
 import in.abdllahtrgt.restapi.service.IProfileService;
+import in.abdllahtrgt.restapi.service.ITokenBlacklistService;
 import in.abdllahtrgt.restapi.util.JwtTokenUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +41,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final CustomUserDetailsService userDetailsService;
+    private final ITokenBlacklistService tokenBlacklistService;
 
     /**
      * API end point to register new user
@@ -64,6 +67,24 @@ public class AuthController {
         final String token = jwtTokenUtil.generateToken(userDetails);
         return new AuthResponse(token, authRequest.getEmail());
     }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PostMapping("/signout")
+    public void signout(HttpServletRequest request) {
+        String jwtToken = extractJwtTokenFromRequest(request);
+        if (jwtToken != null) {
+            tokenBlacklistService.addTokenToBlacklist(jwtToken);
+        }
+    }
+
+    private String extractJwtTokenFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+
 
     private void authenticate(AuthRequest authRequest) throws Exception {
         try {
