@@ -1,6 +1,7 @@
 package in.abdllahtrgt.restapi.config;
 
 import in.abdllahtrgt.restapi.service.CustomUserDetailsService;
+import in.abdllahtrgt.restapi.service.ITokenBlacklistService;
 import in.abdllahtrgt.restapi.util.JwtTokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -39,6 +40,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
+    @Autowired
+    private ITokenBlacklistService tokenBlacklistService;
 
     /**
      * Filters incoming requests to check for a valid JWT token.
@@ -59,6 +62,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
             jwtToken = tokenHeader.substring(7);
 
+            if (jwtToken != null && tokenBlacklistService.isTokenBlacklisted(jwtToken)) {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
             try {
                 email = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
