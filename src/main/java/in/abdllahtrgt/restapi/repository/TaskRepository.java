@@ -3,6 +3,7 @@ package in.abdllahtrgt.restapi.repository;
 import in.abdllahtrgt.restapi.entity.TaskEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -19,4 +20,8 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
      * @return Optional
      */
     Optional<TaskEntity> findByTaskId(String taskId);
+
+    List<TaskEntity> findByOwnerId(Long id);
+
+    Optional<TaskEntity> findByOwnerIdAndTaskId(Long id, String taskId);
 }
