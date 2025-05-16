@@ -68,7 +68,7 @@ public class AuthController {
         return new AuthResponse(token, authRequest.getEmail());
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.NO_CONTENT) // return back -204- code
     @PostMapping("/signout")
     public void signout(HttpServletRequest request) {
         String jwtToken = extractJwtTokenFromRequest(request);

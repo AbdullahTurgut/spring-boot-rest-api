@@ -82,7 +82,7 @@ public class TaskController {
      * @return TaskResponse
      */
     @PutMapping("/tasks/{taskId}/update")
-    public TaskResponse updateTaskDetails(@RequestBody TaskRequest updateRequest, @PathVariable String taskId) {
+    public TaskResponse updateTaskDetails(@Valid @RequestBody TaskRequest updateRequest, @PathVariable String taskId) {
         log.info("API PUT /tasks/{}/update request body {}", taskId, updateRequest);
         TaskDTO updatedTaskDto = mapToTaskDTO(updateRequest);
         // TODO : call the service method to update the details
@@ -98,7 +98,7 @@ public class TaskController {
      * @param taskRequest
      * @return TaskDTO
      */
-    private TaskDTO mapToTaskDTO(@Valid TaskRequest taskRequest) {
+    private TaskDTO mapToTaskDTO(TaskRequest taskRequest) {
         return modelMapper.map(taskRequest, TaskDTO.class);
     }
 

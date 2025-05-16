@@ -1,6 +1,7 @@
 package in.abdllahtrgt.restapi.service;
 
 import in.abdllahtrgt.restapi.dto.TaskDTO;
+import in.abdllahtrgt.restapi.entity.ProfileEntity;
 import in.abdllahtrgt.restapi.entity.TaskEntity;
 import in.abdllahtrgt.restapi.handleException.ResourceNotFoundException;
 import in.abdllahtrgt.restapi.repository.TaskRepository;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class TaskService implements ITaskService {
     private final TaskRepository taskRepository;
     private final ModelMapper modelMapper;
+    private final IAuthService authService;
 
     /**
      * It will fetch the tasks from db
@@ -33,7 +35,8 @@ public class TaskService implements ITaskService {
     @Override
     public List<TaskDTO> getAllTasks() {
         // call the repository method
-        List<TaskEntity> taskList = taskRepository.findAll();
+        Long loggedInProfileId = authService.getLoggedInProfile().getId();
+        List<TaskEntity> taskList = taskRepository.findByOwnerId(loggedInProfileId);
         //convert the entity object to dto
         List<TaskDTO> taskDTOList = taskList.stream()
                 .map(this::mapToTaskDTO)
@@ -80,8 +83,10 @@ public class TaskService implements ITaskService {
      */
     @Override
     public TaskDTO saveTaskDetails(TaskDTO taskDTO) {
+        ProfileEntity profile = authService.getLoggedInProfile();
         TaskEntity taskEntity = mapToTaskEntity(taskDTO);
         taskEntity.setTaskId(UUID.randomUUID().toString());
+        taskEntity.setOwner(profile);
         taskEntity = taskRepository.save(taskEntity);
         log.info("Printing the task entity details {}", taskEntity);
         return mapToTaskDTO(taskEntity);
@@ -95,21 +100,11 @@ public class TaskService implements ITaskService {
         updatedTask.setTaskId(existingTask.getTaskId());
         updatedTask.setCreatedAt(existingTask.getCreatedAt());
         updatedTask.setUpdatedAt(existingTask.getUpdatedAt());
+        updatedTask.setOwner(authService.getLoggedInProfile());
         updatedTask = taskRepository.save(updatedTask);
         log.info("Printing the updated task entity details {}", updatedTask);
         return mapToTaskDTO(updatedTask);
     }
-
-    /**
-     * Mapper method to convert task dto to task entity
-     *
-     * @param taskDTO
-     * @return TaskEntity
-     */
-    private TaskEntity mapToTaskEntity(TaskDTO taskDTO) {
-        return modelMapper.map(taskDTO, TaskEntity.class);
-    }
-
 
     /**
      * It will fetch the task by taskId from db
@@ -118,9 +113,28 @@ public class TaskService implements ITaskService {
      * @return TaskEntity
      */
     private TaskEntity getEntity(String taskId) {
-        TaskEntity task = taskRepository.findByTaskId(taskId)
+        Long id = authService.getLoggedInProfile().getId();
+        TaskEntity task = taskRepository.findByOwnerIdAndTaskId(id, taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found for the id" + taskId));
         return task;
+    }
+
+
+    /**
+     * Mapper method to convert task dto to task entity
+     *
+     * @param dto
+     * @return TaskEntity
+     */
+    private TaskEntity mapToTaskEntity(TaskDTO dto) {
+        TaskEntity entity = new TaskEntity();
+        entity.setTaskId(dto.getTaskId());
+        entity.setName(dto.getName());
+        entity.setStatus(dto.getStatus());
+        entity.setCategory(dto.getCategory());
+        entity.setDate(dto.getDate());
+        // id, createdAt, updatedAt gibi alanlar setlenmez
+        return entity;
     }
 
 
